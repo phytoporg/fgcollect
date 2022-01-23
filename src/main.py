@@ -56,20 +56,31 @@ def main(args):
     # just make it None.
 
     # We're looking for original, video-based content only.
+    results_per_call = min(100, args.results_size)
     query = gen_request_parameters(
         f"#{args.character_tag} has:videos -is:retweet",
-        results_per_call=100,
+        results_per_call=results_per_call,
         granularity=None)
-    rs = ResultStream(request_parameters=query, max_results=results_size, max_pages=1, **credentials)
+    rs = ResultStream(request_parameters=query, max_tweets=args.results_size, max_requests=1, **credentials)
     tweets = list(rs.stream())
 
     tweet_data = [t for t in tweets[0]['data']]
     print(f'Retrieved {len(tweet_data)} results. Fetching content to {args.downloads_path}.')
 
-    # Takes an enterprise API account to do this properly. Video attachment links so far appear to show up
-    # as the last token in all of the tweets I've seen. Hopefully that pattern always holds, and if not, we'll
-    # cross that bridge later.
-    video_urls = [t['text'].split()[-1] for t in tweet_data]
+    video_urls = []
+    for tweet in tweet_data:
+        tweet_id = tweet['id']
+        target_download_prefix = os.path.join(args.downloads_path, tweet_id)
+        if os.path.exists(target_download_prefix + ".mp4") and os.path.exists(target_download_prefix + ".json"):
+            # Skip this one if we already have it
+            print(f'Already have data for tweet ID {tweet_id} in target download path {args.downloads_path}. Skipping.')
+            continue
+
+        # Takes an enterprise API account to do this properly. Video attachment links so far appear to show up
+        # as the last token in all of the tweets I've seen. Hopefully that pattern always holds, and if not, we'll
+        # cross that bridge later.
+        video_url = tweet['text'].split()[-1]
+        video_urls.append(video_url)
 
     # Do some stuff as each video is downloaded.
     def report_ytdl_progress(params):
