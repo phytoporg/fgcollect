@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
- # Credentials
- creds/
+# Credentials
+creds/
+
+# Pycharm
+.idea/
