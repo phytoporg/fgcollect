@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 searchtweets-v2 = "*"
+yt-dlp = "*"
 
 [dev-packages]
 
