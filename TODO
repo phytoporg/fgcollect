@@ -1,0 +1,26 @@
+Need:
+Persistence. 
+- Laptop space is scarce, so maybe just fetch video on-demand and store video source, w/optional 
+  caching + lazy fetch.
+- That's #1, 'cause otherwise iteration is hard and the corpus will stay light. 
+  Last query recovered only 20 recent videos + tweets. 
+
+Then, metadata and tags
+- Media:
+-- Video source (platform)
+
+- Basic: 
+-- Training vs Match
+
+- Combo: 
+-- Start time in video
+-- End time in video
+-- Attacking character
+-- Defending character
+-- Starter attack
+-- Starter attack CH (yes/no)
+-- Starter attack grounded (yes/no)
+-- Starting stage position (midscreen, corner, close to corner)
+-- Combo inputs (string)
+-- Combo tips (array of text entries, for now)
+-- Combo meter usage (type + amount)
