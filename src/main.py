@@ -63,6 +63,9 @@ def main(args):
         granularity=None)
     rs = ResultStream(request_parameters=query, max_tweets=args.results_size, max_requests=1, **credentials)
     tweets = list(rs.stream())
+    if len(tweets) == 0:
+        print('No tweets found for tag: #{args.character_tag}')
+        exit(0)
 
     tweet_data = [t for t in tweets[0]['data']]
     print(f'Retrieved {len(tweet_data)} results. Fetching content to {args.downloads_path}.')
